@@ -4,7 +4,7 @@
 
 int saveEmailContent(vector<struct Process> emailList){
     FILE * file;
-    file = fopen("/home/jiannan/1120161789/OSDesign/taskManager/emailIn.txt","w");
+    file = fopen("emailIn.txt","w");
     if(file == NULL){
         printf("Open file failed!\n");
         return -1;
@@ -23,7 +23,7 @@ int saveEmailContent(vector<struct Process> emailList){
 
 int sendEmail(vector<struct Process> emailList){
     saveEmailContent(emailList);
-    system("python /home/jiannan/1120161789/OSDesign/taskManager/emailSend.py");
+    system("python3 emailSend.py");
     return 0;
 }
 

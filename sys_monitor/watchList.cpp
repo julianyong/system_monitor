@@ -3,7 +3,7 @@
 //linux head
 #include <getopt.h>
 #include <sched.h>
-#include <unistd.h> 
+#include <unistd.h>
 
 //c head
 #include <math.h>
@@ -27,12 +27,12 @@
 using namespace std;
 
 #define debug
-#define unitTest 
+#define unitTest
 
 int saveWatchList(vector<Process>watchList)
 {
     FILE * file;
-    file=fopen("/home/jiannan/1120161789/OSDesign/taskManager/watchList.txt","w");
+    file=fopen("watchList.txt","w");
     for(size_t i = 0; i < watchList.size(); i++)
     {
         fprintf(file,"%d\n",watchList[i].pid);
@@ -44,7 +44,7 @@ int saveWatchList(vector<Process>watchList)
 int openWatchList(vector<Process>&watchList)
 {
     FILE * file;
-    file=fopen("/home/jiannan/1120161789/OSDesign/taskManager/watchList.txt","r");
+    file=fopen("watchList.txt","r");
     pid_t pid;
     watchList.clear();
     while(!feof(file))
@@ -105,29 +105,28 @@ int addProcess(pid_t pid,vector<Process>&watchList)
     return 0;
 }
 
-//#ifdef unitTest
+#ifdef unitTest
 
-//int unitTest1()
-//{
-//    vector<Process>watchList,emailList;
-//    addProcess(10564,watchList);
-//    saveWatchList(watchList);
-//    openWatchList(watchList);
-//    sleep(1);
-//    updateWatchList(watchList,emailList);
-//    for (size_t i = 0; i < emailList.size(); i++)
-//    {
-//        cout<<emailList[i].pid<<endl;
-//    }
-    
-//    cout<<endl;
-//    return 0;
-//}
+int unitTest1()
+{
+    vector<Process>watchList,emailList;
+    addProcess(10564,watchList);
+    saveWatchList(watchList);
+    openWatchList(watchList);
+    sleep(1);
+    updateWatchList(watchList,emailList);
+    for (size_t i = 0; i < emailList.size(); i++)
+    {
+        cout<<emailList[i].pid<<endl;
+    }
 
+    cout<<endl;
+    return 0;
+}
 //int main()
 //{
 //    unitTest1();
 //    return 0;
 //}
 
-//#endif
+#endif

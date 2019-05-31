@@ -3,10 +3,10 @@
 
 #include "list.h"
 #include "processwindow.h"
+#include "memwindow.h"
+#include "sysinfo.h"
 #include <QMainWindow>
-#include <QFile>
 #include <QDir>
-#include <QTimer>
 #include <QMessageBox>
 namespace Ui {
 class MainWindow;
@@ -22,20 +22,14 @@ public:
 
 private:
    Ui::MainWindow *ui;
-   QTimer *timer; //计时器
    List *WatchList;
    processwindow *ProcessInfo;
+   memWindow *MemWindow;
+   sysInfo *SysInfo;
    private slots:
    void closeEvent(QCloseEvent *event);
-   void on_pushButton_kill_clicked();
-   void on_pushButton_refresh_clicked();
    void on_pushButton_reboot_clicked();
    void on_pushButton_halt_clicked();
-   void on_tabWidget_currentChanged(int index);
-   void timer_update_currentTabInfo();
-   //显示tab中的内容
-   void show_tabWidgetInfo(int index);
-//   void on_tabWidget_currentChanged(int index);
 };
 
 #endif // MAINWINDOW_H

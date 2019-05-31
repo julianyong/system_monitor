@@ -31,7 +31,10 @@ SOURCES += \
     watchList.cpp \
     list.cpp \
     email.cpp \
-    processwindow.cpp
+    processwindow.cpp \
+    affinity.cpp \
+    memwindow.cpp \
+    sysinfo.cpp
 
 HEADERS += \
         mainwindow.h \
@@ -40,14 +43,16 @@ HEADERS += \
     watchList.h \
     list.h \
     email.h \
-    processwindow.h
+    processwindow.h \
+    affinity.h \
+    memwindow.h \
+    sysinfo.h
 
 FORMS += \
         mainwindow.ui \
     list.ui \
-    processwindow.ui
+    processwindow.ui \
+    memwindow.ui \
+    sysinfo.ui
 
-DISTFILES += \
-    watchList.txt \
-    emailIn.txt \
-    emailSend.py
+DISTFILES +=
