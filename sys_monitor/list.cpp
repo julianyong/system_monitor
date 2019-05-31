@@ -6,97 +6,8 @@
 #include <iostream>
 #include "email.h"
 #include <unistd.h>
-/*
-string name(int i){
-    switch (i) {
-    case 0:return "aaa";
-    case 1:return "aaa";
-    case 2:return "abc";
-    case 3:return "bbb";
-    case 4:return "bcd";
-    case 5:return "fuc";
-    case 6:return "i";
-    case 7:return "have";
-    case 8:return "an";
-    case 9:return "apple";
-    default:return "error";
-    }
-}
-
-
-string name1(int i){
-    char ch = i + 'A';
-    string res;
-    res.push_back(ch);
-    return res;
-}
-
-int addProcess(pid_t pid,vector<Process>&watchList)
-{
-    Process proc;
-    proc.pid=pid;
-    proc.comm = name1(pid + rand()%15);
-    watchList.push_back(proc);
-    return 0;
-}
-
-
-int saveWatchList(vector<Process>watchList)
-{
-    FILE * file;
-    file=fopen("/home/yue/Desktop/QT/myTestList_1/watchlist.txt","w");
-    for(size_t i = 0; i < watchList.size(); i++)
-    {
-        fprintf(file,"%d\n",watchList[i].pid);
-    }
-    fclose(file);
-    return 0;
-}
-
-int openWatchList(vector<Process> &watchList)
-{
-    FILE * file;
-    file=fopen("/home/yue/Desktop/QT/myTestList_1/watchlist.txt","r");
-    if(file == NULL){
-        printf("Open file failed!\n");
-    }
-    int pid=0;
-    watchList.clear();
-    srand(time(0));
-    while(fscanf(file,"%d\n",&pid)!=EOF)
-    {
-        Process proc;
-        proc.pid=pid;
-        proc.comm = name(pid);
-        proc.task_state = name1(pid + rand()%15);
-        proc.cpuUsage=rand()%100+rand()%10/10.0;
-        proc.memoryUsage=rand()%100+rand()%10/10.0;
-        watchList.push_back(proc);
-    }
-
-    fclose(file);
-    return 0;
-}
-
-
-int updateWatchList(vector<Process> &watchList,vector<Process> &emailList)
-{
-
-    for(int i = 0 ;i < watchList.size();i++){
-        srand(time(0)+i);
-        watchList[i].task_state = name1(i + rand()%15);
-        watchList[i].cpuUsage=rand()%100+rand()%10/10.0;
-        watchList[i].memoryUsage=rand()%100+rand()%10/10.0;
-        //printf("state:%s  ,cpu:%5f,memory:%5f\n",watchList[i].task_state.c_str(),watchList[i].cpuUsage,watchList[i].memoryUsage);
-    }
-
-    return 0;
-}*/
-
-
-
-
-
+#include <vector>
+using namespace std;
 
 List::List(QWidget *parent) :
     QWidget(parent),
@@ -172,7 +83,7 @@ void List::showWatchList()
         ui->tableWidget->item(int(i),2)->setTextAlignment(Qt::AlignCenter);
 
         QTableWidgetItem *cpuUsage = new QTableWidgetItem();
-        cpuUsage->setData(Qt::EditRole, QVariant(watchList[i].cpuUsage));
+        cpuUsage->setData(Qt::EditRole, QVariant(watchList[i].cpuUsage*100));
         ui->tableWidget->setItem(int(i), 3, cpuUsage);
         ui->tableWidget->item(int(i),3)->setTextAlignment(Qt::AlignCenter);
 
@@ -191,18 +102,18 @@ void List::showWatchList()
         }
 
         QTableWidgetItem *memoryUsage = new QTableWidgetItem();
-        memoryUsage->setData(Qt::EditRole, QVariant(watchList[i].memoryUsage));
+        memoryUsage->setData(Qt::EditRole, QVariant(watchList[i].rss*1.0));
         ui->tableWidget->setItem(int(i), 4, memoryUsage);
         ui->tableWidget->item(int(i),4)->setTextAlignment(Qt::AlignCenter);
 
         //根据不同的内存值，设置不同的背景颜色
-        if(watchList[i].memoryUsage < memlevel1){
+        if(watchList[i].rss < memlevel1){
             ui->tableWidget->item(int(i),4)->setBackgroundColor(QColor(255,244,196));
         }
-        else if(watchList[i].memoryUsage < memlevel2){
+        else if(watchList[i].rss < memlevel2){
             ui->tableWidget->item(int(i),4)->setBackgroundColor(QColor(249,236,168));
         }
-        else if(watchList[i].memoryUsage < memlevel3){
+        else if(watchList[i].rss < memlevel3){
             ui->tableWidget->item(int(i),4)->setBackgroundColor(QColor(255,228,135));
         }
         else {
@@ -244,8 +155,8 @@ void List::updateListData()
 
 void List::updateRowData(int row,int pid)
 {
-    int count = watchList.size();
-    for(int i = 0;i < count;i++){
+    sz_type count = watchList.size();
+    for(sz_type i = 0;i < count;i++){
         //如果在watchList中找到了对应的ID为pid的进程信息
         if(watchList[i].pid == pid){
             QTableWidgetItem *taskState = new QTableWidgetItem();
@@ -254,7 +165,7 @@ void List::updateRowData(int row,int pid)
             ui->tableWidget->item(row,2)->setTextAlignment(Qt::AlignCenter);
 
             QTableWidgetItem *cpuUsage = new QTableWidgetItem();
-            cpuUsage->setData(Qt::EditRole, QVariant(watchList[i].cpuUsage));
+            cpuUsage->setData(Qt::EditRole, QVariant(watchList[i].cpuUsage*100));
             ui->tableWidget->setItem(row, 3, cpuUsage);
             ui->tableWidget->item(row,3)->setTextAlignment(Qt::AlignCenter);
 
@@ -273,18 +184,18 @@ void List::updateRowData(int row,int pid)
             }
 
             QTableWidgetItem *memoryUsage = new QTableWidgetItem();
-            memoryUsage->setData(Qt::EditRole, QVariant(watchList[i].memoryUsage));
+            memoryUsage->setData(Qt::EditRole, QVariant(watchList[i].rss*1.0));
             ui->tableWidget->setItem(row, 4, memoryUsage);
             ui->tableWidget->item(row,4)->setTextAlignment(Qt::AlignCenter);
 
             //根据不同的内存值，设置不同的背景颜色
-            if(watchList[i].memoryUsage < memlevel1){
+            if(watchList[i].rss < memlevel1){
                 ui->tableWidget->item(row,4)->setBackgroundColor(QColor(255,244,196));
             }
-            else if(watchList[i].memoryUsage < memlevel2){
+            else if(watchList[i].rss < memlevel2){
                 ui->tableWidget->item(row,4)->setBackgroundColor(QColor(249,236,168));
             }
-            else if(watchList[i].memoryUsage < memlevel3){
+            else if(watchList[i].rss < memlevel3){
                 ui->tableWidget->item(row,4)->setBackgroundColor(QColor(255,228,135));
             }
             else {
@@ -296,6 +207,7 @@ void List::updateRowData(int row,int pid)
     }
 
     //如果在watchList中没有找到对应的进程
+    ui->tableWidget->removeRow(row);
     printf("Error! Not find the Process of ID %d in WatchList.\n",pid);
 }
 
@@ -352,8 +264,8 @@ void List::deleteFromWatchList(int row)
     if (row != -1){
         bool ok;
         int pid = ui->tableWidget->item(row,1)->text().toInt(&ok,10);
-        int cnt = watchList.size();
-        for(int i = 0;i < cnt;i++){
+        sz_type cnt = watchList.size();
+        for(sz_type i = 0;i < cnt;i++){
             //当watchList中有对应的进程，则删除
             if(watchList[i].pid == pid){
                 watchList.erase(watchList.begin()+i);
@@ -395,8 +307,8 @@ void List::deleteInputPid()
     //遍历watchList删除对应的进程
     bool ok;
     int pid = ui->pidEdit->text().toInt(&ok,10);
-    int i;
-    int count = watchList.size();
+    sz_type i;
+    sz_type count = watchList.size();
     for(i = 0; i < count ;i++){
         if(watchList[i].pid == pid){
             watchList.erase(watchList.begin()+i);
@@ -437,7 +349,7 @@ void List::on_addBtn_clicked()
     int pid = ui->pidEdit->text().toInt(&ok,10);
     //添加ID为pid的进程
     if(addProcess(pid,watchList)!=0){
-        printf("Error! %d Process has existed in WatchList or does not exist.\n");
+        printf("Error! %d Process has existed in WatchList or does not exist.\n",pid);
         return;
     }
 

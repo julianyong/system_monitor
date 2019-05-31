@@ -112,8 +112,8 @@ private:
     Ui::List *ui;                                   //创建的界面对象
     vector<struct Process> watchList;               //存储所有监视进程的信息
     QTimer *timer;                                  //定时器
-    double cpulevel1=70,cpulevel2=100,cpulevel3=150;//根据该值将cpu值划分为不同等级，进而上色
-    double memlevel1=70,memlevel2=100,memlevel3=150;//根据该值将内存值划分为不同等级，进而上色
+    double cpulevel1=0.01,cpulevel2=0.1,cpulevel3=0.75;//根据该值将cpu值划分为不同等级，进而上色
+    double memlevel1=500,memlevel2=5000,memlevel3=50000;//根据该值将内存值划分为不同等级，进而上色
 
 private slots:
     void refreshWatchList();                        //刷新监视列表，包括watchList和界面

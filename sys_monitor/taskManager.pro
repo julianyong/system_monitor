@@ -43,11 +43,8 @@ HEADERS += \
     processwindow.h
 
 FORMS += \
-        mainwindow.ui \
     list.ui \
+        mainwindow.ui \
     processwindow.ui
 
-DISTFILES += \
-    watchList.txt \
-    emailIn.txt \
-    emailSend.py
+DISTFILES +=

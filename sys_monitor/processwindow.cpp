@@ -85,7 +85,7 @@ void processwindow::showProcessInfo()
         ui->ProcessInfo->item(int(i),2)->setTextAlignment(Qt::AlignCenter);
 
         QTableWidgetItem *rss = new QTableWidgetItem();
-        rss->setData(Qt::EditRole, QVariant(processlist[i].rss));
+  //      rss->setData(Qt::EditRole, QVariant(processlist[i].rss));
         ui->ProcessInfo->setItem(int(i), 3, rss);
         ui->ProcessInfo->item(int(i),3)->setTextAlignment(Qt::AlignCenter);
 
